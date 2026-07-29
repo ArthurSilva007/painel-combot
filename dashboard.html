@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>botIA - Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF6B35'%3E%3Cpath d='M12 2s5 5 5 10a5 5 0 0 1-10 0c0-1 .3-2 1-3 0 1.5 1 2.5 2 2.5S9 12 9 10c0-3 2-6 3-8z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo"><i data-lucide="flame" class="logo-icon icon-lg"></i> bot<span>IA</span></div>
+    <nav>
+      <a href="dashboard.html" class="active"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+      <a href="publish.html"><i data-lucide="send" class="nav-icon"></i> Publicar Oferta</a>
+      <a href="channels.html"><i data-lucide="radio-tower" class="nav-icon"></i> Canais</a>
+      <a href="settings.html"><i data-lucide="settings" class="nav-icon"></i> Configurações</a>
+    </nav>
+    <div class="user-footer">
+      <div class="avatar" id="navUserInitial">C</div>
+      <span id="navUserName">Cliente</span>
+      <span class="badge-pro">PRO</span>
+      <span class="logout-btn" onclick="logout()" title="Sair"><i data-lucide="log-out" class="icon icon-sm"></i></span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1><i data-lucide="layout-dashboard" class="icon-lg"></i> Dashboard</h1>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="period-tabs" id="periodTabs">
+          <button class="period-tab" data-days="1" type="button">Hoje</button>
+          <button class="period-tab active" data-days="7" type="button">7 dias</button>
+          <button class="period-tab" data-days="30" type="button">30 dias</button>
+        </div>
+        <span class="updated" id="updateTimer">Carregando...</span>
+        <button type="button" class="btn btn-outline btn-sm btn-icon" id="refreshBtn" title="Atualizar agora">
+          <i data-lucide="refresh-cw" class="icon icon-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="metrics" id="metricsContainer">
+      <div class="card metric-card">
+        <div class="label"><i data-lucide="package" class="icon icon-sm"></i> Ofertas hoje</div>
+        <div class="value" id="metricToday">--</div>
+        <div class="trend" id="metricTodayTrend">--</div>
+      </div>
+      <div class="card metric-card">
+        <div class="label"><i data-lucide="calendar-days" class="icon icon-sm"></i> Esta semana</div>
+        <div class="value" id="metricWeek">--</div>
+        <div class="trend" id="metricWeekTrend">--</div>
+      </div>
+      <div class="card metric-card">
+        <div class="label"><i data-lucide="percent" class="icon icon-sm"></i> Desconto médio</div>
+        <div class="value" id="metricAvg">--</div>
+        <div class="trend" id="metricAvgTrend">--</div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="card">
+        <div class="section-title"><i data-lucide="chart-pie" class="icon"></i> <span id="marketplaceTitle">Ofertas por Marketplace</span></div>
+        <div class="chart-wrap"><canvas id="doughnutChart"></canvas></div>
+        <div class="chart-hint">Clique numa fatia para filtrar a tabela abaixo</div>
+      </div>
+      <div class="card">
+        <div class="section-title"><i data-lucide="chart-column" class="icon"></i> <span id="volumeTitle">Volume de ofertas</span></div>
+        <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+        <div class="chart-hint">Passe o mouse pra ver a data — filtro por dia exato ainda não é possível (leia a nota abaixo)</div>
+      </div>
+    </div>
+
+    <div class="filter-chips" id="activeFilters"></div>
+
+    <div class="card" style="margin-bottom:24px;">
+      <div class="section-title"><i data-lucide="flame" class="icon"></i> <span id="topDiscountsTitle">Top descontos</span></div>
+      <div class="table-toolbar">
+        <div class="search-input-wrap">
+          <i data-lucide="search" class="icon"></i>
+          <input type="text" id="discountSearch" placeholder="Buscar produto...">
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Produto</th>
+            <th class="sortable" data-sort="price">Preço <i data-lucide="chevrons-up-down" class="icon"></i></th>
+            <th class="sortable" data-sort="discountPercent">Desconto <i data-lucide="chevrons-up-down" class="icon"></i></th>
+            <th>Origem</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="topDiscountsBody">
+          <tr><td colspan="6"><div class="skeleton" style="height:200px;"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panels">
+      <div class="card">
+        <div class="section-title"><i data-lucide="rss" class="icon"></i> <span id="feedTitle">Últimas ofertas</span></div>
+        <div class="table-toolbar">
+          <div class="search-input-wrap">
+            <i data-lucide="search" class="icon"></i>
+            <input type="text" id="feedSearch" placeholder="Buscar no feed...">
+          </div>
+        </div>
+        <div class="feed" id="recentFeed">
+          <div class="skeleton" style="height:180px;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title"><i data-lucide="radio-tower" class="icon"></i> Meus canais</div>
+        <div class="channels-mini" id="channelsMini">
+          <div class="skeleton" style="height:80px;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

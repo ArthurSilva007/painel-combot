@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>botIA - Configurações</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF6B35'%3E%3Cpath d='M12 2s5 5 5 10a5 5 0 0 1-10 0c0-1 .3-2 1-3 0 1.5 1 2.5 2 2.5S9 12 9 10c0-3 2-6 3-8z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo"><i data-lucide="flame" class="logo-icon icon-lg"></i> bot<span>IA</span></div>
+    <nav>
+      <a href="dashboard.html"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+      <a href="publish.html"><i data-lucide="send" class="nav-icon"></i> Publicar Oferta</a>
+      <a href="channels.html"><i data-lucide="radio-tower" class="nav-icon"></i> Canais</a>
+      <a href="settings.html" class="active"><i data-lucide="settings" class="nav-icon"></i> Configurações</a>
+    </nav>
+    <div class="user-footer">
+      <div class="avatar" id="navUserInitial">C</div>
+      <span id="navUserName">Cliente</span>
+      <span class="badge-pro">PRO</span>
+      <span class="logout-btn" onclick="logout()" title="Sair"><i data-lucide="log-out" class="icon icon-sm"></i></span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar"><h1><i data-lucide="settings" class="icon-lg"></i> Configurações</h1></div>
+    <div style="max-width:600px;display:flex;flex-direction:column;gap:20px;">
+
+      <div class="card">
+        <div class="section-title"><i data-lucide="user" class="icon"></i> Perfil</div>
+        <div class="form-group"><label>Nome</label><input type="text" id="profileName" readonly></div>
+        <div class="form-group"><label>Email</label><input type="email" id="profileEmail" readonly></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><i data-lucide="lock" class="icon"></i> Alterar Senha</div>
+        <form id="passwordForm">
+          <div class="form-group"><label>Senha atual</label><input type="password" id="currentPassword" required></div>
+          <div class="form-group"><label>Nova senha</label><input type="password" id="newPassword" required minlength="6"></div>
+          <div class="form-group"><label>Confirmar nova senha</label><input type="password" id="confirmPassword" required minlength="6"></div>
+          <button type="submit" class="btn" id="passwordBtn">Salvar Senha</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><i data-lucide="search" class="icon"></i> Preferências de Busca</div>
+        <form id="settingsForm">
+          <div class="form-group">
+            <label>Palavras-chave (uma por linha)</label>
+            <textarea id="keywordsInput" rows="5" placeholder="smartphone&#10;fone bluetooth&#10;capinha iphone"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Desconto mínimo (%)</label>
+            <div class="range-row">
+              <input type="range" id="minDiscountRange" min="0" max="50" value="10">
+              <input type="number" id="minDiscountNum" value="10" min="0" max="50">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cooldown entre notificações (minutos)</label>
+            <input type="number" id="cooldownInput" value="60" min="1" max="1440">
+          </div>
+          <button type="submit" class="btn" id="settingsBtn">Salvar Preferências</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/settings.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
