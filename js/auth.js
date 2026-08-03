@@ -1,7 +1,11 @@
 async function login(username, password) {
   const data = await API.post('/api/auth/login', { username, password });
   localStorage.setItem('token', data.accessToken || data.token);
-  localStorage.setItem('clientId', data.clientId);
+  // data.clientId pode vir null (ex: ADMIN sem cliente associado). Sem este
+  // fallback, localStorage.setItem grava a STRING "null", que é "verdadeira"
+  // pro JS e passa por checagens tipo `if (!cid)` — causando chamadas do tipo
+  // /api/v1/clients/null/channels (400).
+  localStorage.setItem('clientId', data.clientId || '');
   localStorage.setItem('username', data.username);
   localStorage.setItem('role', data.role);
   localStorage.setItem('userId', data.userId);
