@@ -67,6 +67,14 @@ function formatTrend(v) {
   return '<span class="' + cls + '"><i data-lucide="' + icon + '" class="icon icon-sm"></i> ' + Math.abs(v).toFixed(1) + '%</span>';
 }
 
+// Mostra o link "Usuários" na sidebar somente se o usuário logado for ADMIN.
+// Chamado a partir do loadUserProfile() de cada página (exceto users.html,
+// que já faz sua própria checagem de role).
+function applyAdminNav(user) {
+  var el = document.getElementById('adminNav');
+  if (el && user && user.role === 'ADMIN') el.style.display = '';
+}
+
 function resolveClientId() { return localStorage.getItem('clientId'); }
 
 function resolveUserId() { return localStorage.getItem('userId'); }
