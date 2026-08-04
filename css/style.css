@@ -115,22 +115,10 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 .sidebar .user-footer {
   margin-top:auto; padding:18px 22px 4px;
   border-top:1px solid var(--border);
-  display:flex; align-items:center; gap:8px; font-size:var(--fs-base);
-  overflow:hidden; /* nada vaza pra fora da sidebar, mesmo com email longo */
+  display:flex; align-items:center; gap:10px; font-size:var(--fs-base);
 }
-/* Avatar+nome+badge ficam num bloco só que pode encolher; o logout fica FORA
-   dessa disputa de espaço, então nunca é ele que perde espaço. */
-.user-footer-info {
-  display:flex; align-items:center; gap:8px;
-  flex:1 1 auto; min-width:0; overflow:hidden;
-}
-#navUserName {
-  flex:1 1 auto; min-width:0;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.avatar, .badge-pro, .badge-admin, .user-footer .logout-btn { flex-shrink:0; }
 .user-footer .logout-btn {
-  color:var(--text-muted); cursor:pointer;
+  color:var(--text-muted); cursor:pointer; margin-left:auto;
   display:flex; align-items:center; padding:6px; border-radius:6px; transition:.15s;
 }
 .user-footer .logout-btn:hover { color:var(--danger); background:var(--danger-soft); }
@@ -142,7 +130,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 }
 .badge-pro, .badge-admin {
   font-size:9.5px; font-weight:700; letter-spacing:.03em;
-  padding:2.5px 7px; border-radius:20px;
+  padding:2.5px 7px; border-radius:20px; margin-left:auto;
 }
 .badge-pro { background:var(--accent-soft); color:var(--accent); }
 .badge-admin { background:var(--admin-soft); color:var(--admin); }
@@ -150,8 +138,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 /* Main */
 .main { margin-left:var(--sidebar-w); flex:1; padding:28px 32px; overflow-y:auto; }
 .main > * { max-width:1280px; }
-.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; max-width:1280px; flex-wrap:wrap; gap:12px; }
-.topbar-controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; max-width:1280px; }
 .topbar h1 { font-size:var(--fs-xl); font-weight:700; display:flex; align-items:center; gap:10px; }
 .topbar h1 .icon-lg { color:var(--accent); }
 .topbar .updated { font-size:var(--fs-sm); color:var(--text-muted); display:flex; align-items:center; gap:7px; }
@@ -416,22 +403,6 @@ th.sortable.sort-active .icon { opacity:1; }
 /* Gráficos clicáveis */
 .chart-wrap canvas { cursor:pointer; }
 .chart-hint { font-size:var(--fs-xs); color:var(--text-faint); text-align:center; margin-top:8px; }
-
-/* Notebook / janela estreita (entre desktop grande e o corte mobile em 768px).
-   Sem isso, telas ~900-1180px ficavam "espremidas" no layout de 3 colunas. */
-@media (max-width:1180px) {
-  .main { padding:22px; }
-  .metrics { grid-template-columns:repeat(2,1fr); }
-  .panels { grid-template-columns:1fr; }
-  .topbar { flex-wrap:wrap; row-gap:10px; }
-}
-@media (max-width:900px) {
-  .metrics { grid-template-columns:1fr; }
-}
-
-/* Tabelas nunca quebram o layout — se não couber, rola por dentro em vez de
-   espremer colunas ou vazar pra fora do card. */
-.table-scroll { overflow-x:auto; }
 
 /* Mobile */
 @media (max-width:768px) {
