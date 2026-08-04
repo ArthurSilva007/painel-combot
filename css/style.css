@@ -118,8 +118,12 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
   display:flex; align-items:center; gap:8px; font-size:var(--fs-base);
   overflow:hidden; /* nada vaza pra fora da sidebar, mesmo com email longo */
 }
-/* Nome/email do usuário: encolhe e corta com "..." em vez de empurrar o
-   botão de logout pra fora da sidebar (era o bug do email longo). */
+/* Avatar+nome+badge ficam num bloco só que pode encolher; o logout fica FORA
+   dessa disputa de espaço, então nunca é ele que perde espaço. */
+.user-footer-info {
+  display:flex; align-items:center; gap:8px;
+  flex:1 1 auto; min-width:0; overflow:hidden;
+}
 #navUserName {
   flex:1 1 auto; min-width:0;
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
@@ -138,7 +142,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 }
 .badge-pro, .badge-admin {
   font-size:9.5px; font-weight:700; letter-spacing:.03em;
-  padding:2.5px 7px; border-radius:20px; margin-left:auto;
+  padding:2.5px 7px; border-radius:20px;
 }
 .badge-pro { background:var(--accent-soft); color:var(--accent); }
 .badge-admin { background:var(--admin-soft); color:var(--admin); }
