@@ -16,11 +16,14 @@
       <a href="publish.html"><i data-lucide="send" class="nav-icon"></i> Publicar Oferta</a>
       <a href="channels.html"><i data-lucide="radio-tower" class="nav-icon"></i> Canais</a>
       <a href="settings.html"><i data-lucide="settings" class="nav-icon"></i> Configurações</a>
+      <a href="users.html" id="adminNav" style="display:none;"><i data-lucide="users" class="nav-icon"></i> Usuários</a>
     </nav>
     <div class="user-footer">
-      <div class="avatar" id="navUserInitial">C</div>
-      <span id="navUserName">Cliente</span>
-      <span class="badge-pro">PRO</span>
+      <div class="user-footer-info">
+        <div class="avatar" id="navUserInitial">C</div>
+        <span id="navUserName">Cliente</span>
+        <span class="badge-pro">PRO</span>
+      </div>
       <span class="logout-btn" onclick="logout()" title="Sair"><i data-lucide="log-out" class="icon icon-sm"></i></span>
     </div>
   </aside>
@@ -28,7 +31,7 @@
   <main class="main">
     <div class="topbar">
       <h1><i data-lucide="layout-dashboard" class="icon-lg"></i> Dashboard</h1>
-      <div style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-controls">
         <div class="period-tabs" id="periodTabs">
           <button class="period-tab" data-days="1" type="button">Hoje</button>
           <button class="period-tab active" data-days="7" type="button">7 dias</button>
@@ -82,21 +85,23 @@
           <input type="text" id="discountSearch" placeholder="Buscar produto...">
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Produto</th>
-            <th class="sortable" data-sort="price">Preço <i data-lucide="chevrons-up-down" class="icon"></i></th>
-            <th class="sortable" data-sort="discountPercent">Desconto <i data-lucide="chevrons-up-down" class="icon"></i></th>
-            <th>Origem</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="topDiscountsBody">
-          <tr><td colspan="6"><div class="skeleton" style="height:200px;"></div></td></tr>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Produto</th>
+              <th class="sortable" data-sort="price">Preço <i data-lucide="chevrons-up-down" class="icon"></i></th>
+              <th class="sortable" data-sort="discountPercent">Desconto <i data-lucide="chevrons-up-down" class="icon"></i></th>
+              <th>Origem</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="topDiscountsBody">
+            <tr><td colspan="6"><div class="skeleton" style="height:200px;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="panels">

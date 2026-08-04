@@ -1,7 +1,11 @@
 async function login(username, password) {
   const data = await API.post('/api/auth/login', { username, password });
   localStorage.setItem('token', data.accessToken || data.token);
-  localStorage.setItem('clientId', data.clientId);
+  // data.clientId pode vir null (ex: ADMIN sem cliente associado). Sem este
+  // fallback, localStorage.setItem grava a STRING "null", que é "verdadeira"
+  // pro JS e passa por checagens tipo `if (!cid)` — causando chamadas do tipo
+  // /api/v1/clients/null/channels (400).
+  localStorage.setItem('clientId', data.clientId || '');
   localStorage.setItem('username', data.username);
   localStorage.setItem('role', data.role);
   localStorage.setItem('userId', data.userId);
@@ -61,6 +65,14 @@ function formatTrend(v) {
   var cls = v > 0 ? 'trend-up' : 'trend-down';
   var icon = v > 0 ? 'trending-up' : 'trending-down';
   return '<span class="' + cls + '"><i data-lucide="' + icon + '" class="icon icon-sm"></i> ' + Math.abs(v).toFixed(1) + '%</span>';
+}
+
+// Mostra o link "Usuários" na sidebar somente se o usuário logado for ADMIN.
+// Chamado a partir do loadUserProfile() de cada página (exceto users.html,
+// que já faz sua própria checagem de role).
+function applyAdminNav(user) {
+  var el = document.getElementById('adminNav');
+  if (el && user && user.role === 'ADMIN') el.style.display = '';
 }
 
 function resolveClientId() { return localStorage.getItem('clientId'); }

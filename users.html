@@ -19,16 +19,18 @@
       <a href="users.html" class="active" id="adminNav" style="display:none;"><i data-lucide="users" class="nav-icon"></i> Usuários</a>
     </nav>
     <div class="user-footer">
-      <div class="avatar" id="navUserInitial">A</div>
-      <span id="navUserName">Admin</span>
-      <span class="badge-admin" id="navRole">ADMIN</span>
+      <div class="user-footer-info">
+        <div class="avatar" id="navUserInitial">A</div>
+        <span id="navUserName">Admin</span>
+        <span class="badge-admin" id="navRole">ADMIN</span>
+      </div>
       <span class="logout-btn" onclick="logout()" title="Sair"><i data-lucide="log-out" class="icon icon-sm"></i></span>
     </div>
   </aside>
 
   <main class="main">
     <div class="topbar"><h1><i data-lucide="users" class="icon-lg"></i> Gerenciar Usuários</h1></div>
-    <div style="max-width:650px;">
+    <div style="max-width:700px;">
 
       <div class="card" style="margin-bottom:20px;">
         <div class="section-title"><i data-lucide="user-plus" class="icon"></i> Criar Novo Cliente</div>
@@ -38,6 +40,21 @@
           <div class="form-group"><label>Senha (mín 6 caracteres)</label><input type="password" id="newPassword" required minlength="6"></div>
           <div class="form-group"><label>Chat ID do Telegram</label><input type="text" id="telegramChatId" placeholder="-1001234567890"></div>
           <div class="form-group"><label>Group ID do WhatsApp</label><input type="text" id="whatsappNumber" placeholder="120363...-group"></div>
+
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--accent);font-weight:600;cursor:pointer;margin-bottom:8px;" id="toggleCredsBtn">
+            <i data-lucide="key-round" class="icon"></i> Credenciais de marketplace (opcional) <i data-lucide="chevron-down" class="icon icon-sm" id="toggleCredsIcon"></i>
+          </div>
+          <div class="expand-form" id="credsFormSection">
+            <div style="font-size:11px;color:var(--text-faint);margin-bottom:12px;">Preencha só se já tiver as credenciais do cliente na AliExpress e/ou Shopee. Pode deixar em branco e cadastrar depois.</div>
+            <div class="section-title" style="font-size:12px;"><i data-lucide="shopping-bag" class="icon icon-sm"></i> AliExpress</div>
+            <div class="form-group"><label>App Key</label><input type="text" id="aeAppKey" placeholder="123456"></div>
+            <div class="form-group"><label>App Secret</label><input type="password" id="aeAppSecret" placeholder="••••••••"></div>
+            <div class="form-group"><label>Access Token</label><input type="password" id="aeAccessToken" placeholder="••••••••"></div>
+            <div class="section-title" style="font-size:12px;margin-top:8px;"><i data-lucide="shopping-bag" class="icon icon-sm"></i> Shopee</div>
+            <div class="form-group"><label>Partner ID</label><input type="text" id="shopeePartnerId" placeholder="987654"></div>
+            <div class="form-group"><label>Partner Key</label><input type="password" id="shopeePartnerKey" placeholder="••••••••"></div>
+          </div>
+
           <button type="submit" class="btn btn-full"><i data-lucide="rocket" class="icon"></i> Criar Cliente Completo</button>
         </form>
       </div>
