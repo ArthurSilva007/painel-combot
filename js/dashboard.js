@@ -47,7 +47,7 @@
       var user = await loadUserInfo();
       if (user) {
         var name = (user.client && user.client.name) || user.username || 'Cliente';
-        document.getElementById('navUserName').textContent = name;
+        document.getElementById('navUserName').textContent = name; document.getElementById('navUserName').title = name;
         document.getElementById('navUserInitial').textContent = name.charAt(0).toUpperCase();
         applyAdminNav(user);
       }

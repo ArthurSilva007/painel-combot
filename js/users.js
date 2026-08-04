@@ -19,7 +19,7 @@
       var user = await loadUserInfo();
       if (user) {
         var displayName = user.client ? user.client.name : user.username;
-        document.getElementById('navUserName').textContent = displayName;
+        document.getElementById('navUserName').textContent = displayName; document.getElementById('navUserName').title = displayName;
         document.getElementById('navUserInitial').textContent = displayName.charAt(0).toUpperCase();
         document.getElementById('navRole').textContent = user.role;
         if (user.role === 'ADMIN') {

@@ -63,7 +63,7 @@
         var name = (user.client && user.client.name) || user.username || 'Cliente';
         var el = document.getElementById('navUserName');
         var init = document.getElementById('navUserInitial');
-        if (el) el.textContent = name;
+        if (el) { el.textContent = name; el.title = name; }
         if (init) init.textContent = name.charAt(0).toUpperCase();
         applyAdminNav(user);
       }
