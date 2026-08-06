@@ -81,28 +81,34 @@
         </div>
 
         <div id="customMessageFields" style="display:none;">
-          <div class="form-group">
-            <label>Modelo da mensagem</label>
-            <textarea id="customMessageTemplate" rows="6"></textarea>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{productName}">produto</button>
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{price}">preço</button>
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{originalPrice}">preço original</button>
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{discountPercent}">desconto</button>
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{source}">marketplace</button>
-            <button type="button" class="btn btn-outline btn-sm" data-insert="{productUrl}">link</button>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Escolha como sua mensagem vai aparecer:</div>
+
+          <div id="presetList" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
+
+          <div id="customEditorSection" style="display:none;">
+            <div class="form-group">
+              <label>Escreva sua mensagem</label>
+              <textarea id="customMessageTemplate" rows="6"></textarea>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Clique num botão pra colocar essa informação no texto:</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{productName}">📦 nome do produto</button>
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{price}">💰 preço</button>
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{originalPrice}">💸 preço antigo</button>
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{discountPercent}">📉 desconto</button>
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{source}">🛒 loja</button>
+              <button type="button" class="btn btn-outline btn-sm" data-insert="{productUrl}">🔗 link</button>
+            </div>
           </div>
 
           <div class="form-group">
-            <label>Pré-visualização (com dados de exemplo)</label>
-            <div id="messagePreview" style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-size:13px;white-space:pre-wrap;line-height:1.6;"></div>
+            <label>É assim que vai chegar pro cliente:</label>
+            <div id="messagePreview" class="message-preview-box"></div>
           </div>
         </div>
 
         <div style="display:flex;gap:10px;">
           <button type="button" class="btn" id="saveMessageBtn"><i data-lucide="save" class="icon icon-sm"></i> Salvar Mensagem</button>
-          <button type="button" class="btn btn-outline btn-sm" id="resetMessageBtn">Restaurar padrão</button>
         </div>
       </div>
 
