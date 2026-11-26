@@ -1,0 +1,8 @@
+{
+  "name": "painel-combot",
+  "private": true,
+  "description": "Frontend estatico independente do botIA",
+  "scripts": {
+    "test": "node --test"
+  }
+}
