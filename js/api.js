@@ -1,9 +1,9 @@
 const API = {
   getBaseUrl() {
-    // Antes: URL duplicada aqui (ignorava config.js). Agora lê de um único lugar.
-    return (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.API_URL)
-      ? APP_CONFIG.API_URL
-      : 'https://PromobotIA-main.vps9817.panel.icontainer.run';
+    if (typeof window === 'undefined' || !window.APP_CONFIG || typeof window.APP_CONFIG.getApiUrl !== 'function') {
+      throw new Error('API não configurada. Carregue js/config.js com um ambiente explícito antes de usar a API.');
+    }
+    return window.APP_CONFIG.getApiUrl();
   },
 
   getToken() { return localStorage.getItem('token'); },
@@ -17,23 +17,36 @@ const API = {
   },
 
   async handleResponse(res) {
-    if (res.status === 401) { localStorage.clear(); window.location.href = 'index.html'; throw new Error('Sessão expirada'); }
+    if (res.status === 401) {
+      localStorage.clear();
+      window.location.href = 'index.html';
+      throw new Error('Sessão expirada');
+    }
     if (!res.ok) {
       let msg = 'Erro ' + res.status;
-      try { const b = await res.json(); msg = b.message || msg; } catch(e) {}
+      try {
+        const body = await res.json();
+        msg = (body && (body.message || body.error || body.detail)) || msg;
+      } catch (e) {}
       throw new Error(msg);
     }
     if (res.status === 204) return null;
     return res.json();
   },
 
-  url(path) { return this.getBaseUrl() + path; },
+  url(path) {
+    const normalizedPath = String(path || '');
+    if (!normalizedPath.startsWith('/')) {
+      throw new Error('O caminho da API deve ser relativo e começar com /.');
+    }
+    return this.getBaseUrl() + normalizedPath;
+  },
 
   async get(path) { return this.handleResponse(await fetch(this.url(path), { headers: this.headers() })); },
-  async post(path, data) { return this.handleResponse(await fetch(this.url(path), { method:'POST', headers:this.headers(), body:JSON.stringify(data) })); },
-  async put(path, data) { return this.handleResponse(await fetch(this.url(path), { method:'PUT', headers:this.headers(), body:JSON.stringify(data) })); },
+  async post(path, data) { return this.handleResponse(await fetch(this.url(path), { method: 'POST', headers: this.headers(), body: JSON.stringify(data) })); },
+  async put(path, data) { return this.handleResponse(await fetch(this.url(path), { method: 'PUT', headers: this.headers(), body: JSON.stringify(data) })); },
   async patch(path, data) {
-    const opts = { method:'PATCH', headers:this.headers() };
+    const opts = { method: 'PATCH', headers: this.headers() };
     if (data) opts.body = JSON.stringify(data);
     return this.handleResponse(await fetch(this.url(path), opts));
   }

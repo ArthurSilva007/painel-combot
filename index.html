@@ -58,7 +58,7 @@
           await login(u, p);
           window.location.href = 'dashboard.html';
         } catch(err) {
-          errorText.textContent = 'Email ou senha inválidos. Verifique e tente novamente.';
+          errorText.textContent = (err && err.message) || 'Não foi possível concluir o login.';
           error.classList.add('show');
         } finally {
           btn.disabled = false; btnText.style.display = ''; spinner.classList.remove('show');
