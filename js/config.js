@@ -1,10 +1,15 @@
 (function (root) {
   'use strict';
 
-  // This is the deployment setting. For a separate staging deployment, set
-  // window.__BOTIA_API_ENV__ to "staging" before loading this file, or change
-  // the explicit value below in that deployment's static bundle.
-  var configuredEnvironment = root.__BOTIA_API_ENV__ || 'production';
+  // deployment.js must select the environment explicitly before this file.
+  var configuredEnvironment = root.__BOTIA_API_ENV__;
+  if (typeof configuredEnvironment !== 'string' || !configuredEnvironment.trim()) {
+    throw new Error(
+      'API não configurada. Defina explicitamente window.__BOTIA_API_ENV__ ' +
+      'em js/deployment.js antes de carregar js/config.js.'
+    );
+  }
+
   var apiUrls = {
     production: 'https://PromobotIA-main.vps9817.panel.icontainer.run',
     staging: 'http://127.0.0.1:8084',
@@ -12,7 +17,7 @@
   };
 
   function getApiUrl() {
-    var url = apiUrls[configuredEnvironment];
+    var url = apiUrls[configuredEnvironment.trim()];
     if (typeof url !== 'string' || !url.trim()) {
       throw new Error(
         'API não configurada para o ambiente "' + configuredEnvironment +
@@ -31,7 +36,7 @@
   }
 
   root.APP_CONFIG = Object.freeze({
-    environment: configuredEnvironment,
+    environment: configuredEnvironment.trim(),
     apiUrls: Object.freeze(apiUrls),
     getApiUrl: getApiUrl
   });

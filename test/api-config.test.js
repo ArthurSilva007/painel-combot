@@ -6,6 +6,7 @@ const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const configSource = fs.readFileSync(path.join(root, 'js/config.js'), 'utf8');
+const deploymentSource = fs.readFileSync(path.join(root, 'js/deployment.js'), 'utf8');
 const apiSource = fs.readFileSync(path.join(root, 'js/api.js'), 'utf8');
 const authSource = fs.readFileSync(path.join(root, 'js/auth.js'), 'utf8');
 const productionUrl = loadProductionUrl();
@@ -35,6 +36,7 @@ function loadContext({ environment = 'staging', fetchImpl = null, withConfig = t
     fetch: fetchImpl || (async () => ({ ok: true, status: 200, json: async () => ({}) }))
   };
   vm.createContext(context);
+  vm.runInContext(deploymentSource.replace("'production'", "'" + environment + "'"), context);
   if (withConfig) vm.runInContext(configSource, context);
   vm.runInContext(apiSource + '\nthis.__API = API;', context);
   vm.runInContext(authSource + '\nthis.__login = login;', context);
@@ -50,10 +52,17 @@ test('configura homologação e desenvolvimento sem depender da URL de produçã
 });
 
 test('falha claramente quando o ambiente não possui URL configurada', async () => {
-  const context = loadContext({ environment: 'isolated-review' });
+  const context = {
+    URL,
+    localStorage: createStorage(),
+    window: { location: { href: '', origin: 'http://frontend.test' } },
+    fetch: async () => { throw new Error('fetch não deveria ser chamado'); }
+  };
+  vm.createContext(context);
+  vm.runInContext(apiSource + '\nthis.__API = API;', context);
   await assert.rejects(
     context.__API.get('/api/auth/me'),
-    /API não configurada para o ambiente/
+    /API não configurada\. Carregue js\/config\.js/
   );
 });
 
@@ -106,6 +115,7 @@ test('todas as páginas carregam config.js antes de api.js e cobrem os fluxos pr
   const htmlFiles = fs.readdirSync(root).filter(file => file.endsWith('.html'));
   for (const file of htmlFiles) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.ok(html.indexOf('src="js/deployment.js"') < html.indexOf('src="js/config.js"'), file);
     assert.ok(html.indexOf('src="js/config.js"') < html.indexOf('src="js/api.js"'), file);
   }
 

@@ -4,12 +4,14 @@ Frontend estático independente do botIA, em HTML, CSS e JavaScript. A API é es
 
 ## Ambientes
 
-O arquivo central mantém configurações explícitas para `production`, `staging` e `development`. A configuração padrão versionada é `production` para preservar o uso atual. Uma implantação separada deve selecionar `staging` ou `development` explicitamente, antes de carregar `js/config.js`, por exemplo:
+O arquivo central mantém configurações explícitas para `production`, `staging` e `development`. O seletor explícito da implantação fica em `js/deployment.js`; a configuração versionada seleciona `production` para preservar o uso atual. `js/config.js` falha se esse seletor não existir ou apontar para um ambiente sem URL.
 
 ```html
-<script>window.__BOTIA_API_ENV__ = 'staging';</script>
+<script src="js/deployment.js"></script>
 <script src="js/config.js"></script>
 ```
+
+Para uma cópia isolada, altere somente `root.__BOTIA_API_ENV__ = 'production';` para `root.__BOTIA_API_ENV__ = 'staging';` em `js/deployment.js`. Não altere a `main` nem reutilize a cópia de homologação como publicação de produção.
 
 Se o ambiente não tiver uma URL válida, o frontend interrompe a chamada e mostra um erro de configuração. Não existe fallback silencioso para produção em `js/api.js`.
 
@@ -28,7 +30,7 @@ cd C:\caminho\para\painel-combot
 py -m http.server 5500
 ```
 
-Na cópia usada para homologação, selecione `staging` antes de carregar `js/config.js` (como no exemplo da seção anterior) e acesse `http://127.0.0.1:5500`. As requisições irão somente para `http://127.0.0.1:8084`; não use credenciais de produção e não publique essa cópia.
+Na cópia usada para homologação, selecione `staging` em `js/deployment.js` e acesse `http://127.0.0.1:5500`. As requisições irão somente para `http://127.0.0.1:8084`; não use credenciais de produção e não publique essa cópia.
 
 Se o backend não aceitar a origem `http://127.0.0.1:5500`, a política CORS do ambiente de homologação precisa permitir essa origem no repositório `promo_bot`. Isso é uma configuração do backend de homologação, não uma dependência deste repositório. Uma alternativa é servir o frontend pelo próprio backend de homologação, desde que a cópia estática usada ali tenha sido atualizada de forma independente.
 
